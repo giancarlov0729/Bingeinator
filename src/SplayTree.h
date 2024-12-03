@@ -6,7 +6,7 @@
 #define SPLAY_TREE_H
 
 #include <iostream>
-#include "node.h" // Assuming Node is defined here
+#include "Node.h" // Assuming Node is defined here
 
 class SplayTree {
 private:
@@ -76,7 +76,7 @@ public:
 
     void insert(const Node& node) {
         if (!root) {
-            root = new Node(node.title, node.rating, node.leadingActor, node.genre, node.director);
+            root = new Node(node.title, node.rating, node.genre, node.director);
             return;
         }
         root = splay(root, node.title);
@@ -84,7 +84,7 @@ public:
         if (node.title == root->title)
             return;
 
-        Node* newNode = new Node(node.title, node.rating, node.leadingActor, node.genre, node.director);
+        Node* newNode = new Node(node.title, node.rating, node.genre, node.director);
         if (node.title < root->title) {
             newNode->right = root;
             newNode->left = root->left;

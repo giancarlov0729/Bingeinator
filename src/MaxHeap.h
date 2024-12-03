@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <stdexcept>
-#include "node.h" // Assuming Node is defined here
+#include "Node.h" // Assuming Node is defined here
 
 class MaxHeap {
 private:
