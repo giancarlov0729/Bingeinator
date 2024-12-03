@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <fstream>
 #include <sstream>
+#include <cctype>
+#include <chrono>
 #include <string>
 #include "Node.h"
 #include "MaxHeap.h"
@@ -23,6 +25,16 @@ void printWorkingDirectory() {
     }
 }*/
 
+//just so we can avoid issues with capitalization
+// Convert a string to lowercase
+string toLowerCase(const string& str) {
+    string result;
+    result.reserve(str.size());
+    for (char ch : str) {
+        result += tolower(static_cast<unsigned char>(ch));
+    }
+    return result;
+}
 
 // Function to read the CSV file and populate the MaxHeap and SplayTree
 void readCSV(const string& filePath, MaxHeap& maxHeap, SplayTree& splayTree, bool choice) {
@@ -95,6 +107,47 @@ void readCSV(const string& filePath, MaxHeap& maxHeap, SplayTree& splayTree, boo
     cout << "File successfully loaded into MaxHeap or SplayTree.\n";
 }
 
+// Function to get top 20 recommendations from the max heap based on genre or director
+void recommendFromMaxHeap(MaxHeap& maxHeap, const string& userGenre, const string& userDirector) {
+    vector<Node> genreList;     // List of shows with the same genre
+    vector<Node> directorList; // List of shows with the same director
+
+    // Record start time
+    auto start = std::chrono::high_resolution_clock::now();
+
+    while (!maxHeap.isEmpty() && (genreList.size() < 20 || directorList.size() < 20)) {
+        Node topShow = maxHeap.extractMax();
+
+        // Check for same genre
+        if (genreList.size() < 20 && toLowerCase(topShow.genre) == toLowerCase(userGenre)) {
+            genreList.push_back(topShow);
+        }
+
+        // Check for same director
+        if (directorList.size() < 20 && toLowerCase(topShow.director) == toLowerCase(userDirector)) {
+            directorList.push_back(topShow);
+        }
+    }
+
+    // Record end time
+    auto end = chrono::high_resolution_clock::now();
+
+    // Calculate duration in milliseconds
+    auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+    cout << "\n\nMaxHeap completed in " << duration.count() << " milliseconds.\n";
+
+    // Display recommendations
+    cout << "\nTop 20 Shows with the Same Genre (" << userGenre << "):" << endl;
+    for (const Node& show : genreList) {
+        cout << show.title << " (" << show.rating << ")" << endl;
+    }
+
+    cout << "\nTop 20 Shows with the Same Creator (" << userDirector << "):" << endl;
+    for (const Node& show : directorList) {
+        cout << show.title << " (" << show.rating << ")" << endl;
+    }
+}
 
 int main() {
     MaxHeap maxHeap;
@@ -105,15 +158,17 @@ int main() {
     cout << "Welcome to The Bingeinator!" << std::endl;
 
     cout << "Before we begin, do you want to use a Max Heap (m) or a SplayTree (s)? \n";
-    char input;
-    cin >> input; // Get a single character input
+    string input;
+    getline(cin, input); // Get a single character input
 
-    if (input == 'm' || input == 'M') {
+    bool whichAlgo = true;
+    if (input == "m" || input == "M") {
         cout << "You chose Max Heap.\n";
         readCSV("src/tvs.csv", maxHeap, splayTree, true);
-    } else if (input == 's' || input == 'S') {
+    } else if (input == "s" || input == "S") {
         cout << "You chose Splay Tree.\n";
         readCSV("src/tvs.csv", maxHeap, splayTree, false);
+        whichAlgo = false;
     } else {
         cout << "Invalid input.\n";
     }
@@ -121,20 +176,23 @@ int main() {
     cout << "Now that we everything is set up, let's help you find your next Binge!" << endl;
     cout << "What show did you just recently finish?" << "\nType in the full name of the show here: " << endl;
     string userShow;
-    cin >> userShow;
+    getline(cin, userShow);
 
-    cout << "\"" << userShow << "\"" << " is a great show!\nDo you want recommendations based off the same genre or creator/director?" << endl;
-    cout << "Input 'g' for genre or 'd' for director: ";
-    string userInput;
-    cin >> userInput;
+    cout << "\"" << userShow << "\"" << " is a great show!" << endl;
+    cout << "What's the first and last name of the creator?\nInput here: ";
+    string userCreator;
+    getline(cin, userCreator);
 
-    if(userInput == "g"){
-        userInput = "genre";
-    }else if(userInput == "d"){
-        userInput = "director";
+    cout << "What's the genre of the show?\nInput here: ";
+    string userGenre;
+    getline(cin, userGenre);
+
+    if(whichAlgo){
+        recommendFromMaxHeap(maxHeap, userGenre, userCreator);
+    } else{
+        //recommendFromMaxHeap(maxHeap, userGenre, userCreator); this will be the other function call instead
     }
 
-    cout << "Here are shows with the highest ratings that have the same ";
 
     return 0;
 }
