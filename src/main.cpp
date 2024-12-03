@@ -124,12 +124,14 @@ int main() {
     cin >> userShow;
 
     cout << "\"" << userShow << "\"" << " is a great show!\nDo you want recommendations based off the same genre or creator/director?" << endl;
-    cout << "Input g for genre or d for director: ";
+    cout << "Input 'g' for genre or 'd' for director: ";
     string userInput;
     cin >> userInput;
 
     if(userInput == "g"){
-        userInput == "genre";
+        userInput = "genre";
+    }else if(userInput == "d"){
+        userInput = "director";
     }
 
     cout << "Here are shows with the highest ratings that have the same ";
