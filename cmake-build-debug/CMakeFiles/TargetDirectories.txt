@@ -1,0 +1,3 @@
+/Users/giancarlo_vidal/CLionProjects/Bingeinator/cmake-build-debug/CMakeFiles/Bingeinator.dir
+/Users/giancarlo_vidal/CLionProjects/Bingeinator/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/giancarlo_vidal/CLionProjects/Bingeinator/cmake-build-debug/CMakeFiles/rebuild_cache.dir
