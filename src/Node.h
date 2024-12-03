@@ -4,24 +4,26 @@
 
 #ifndef NODE_H
 #define NODE_H
+
 #include <string>
 using namespace std;
-
 
 struct Node {
   string title;
   double rating;
-  string director;
-  string leadingActor;
   string genre;
+  string director;
+  Node* left;  // Pointer to the left child
+  Node* right; // Pointer to the right child
 
-  Node( string title, double rating, string leadingActor, string genre, string director);{
-    this->title = title;
-    this->rating = rating;
-    this->leadingActor = leadingActor;
-    this->genre = genre;
-    this->director = director;
-  }
+  // Constructor
+  Node(string title, double rating, string genre, string director)
+      : title(std::move(title)),
+        rating(rating),
+        genre(std::move(genre)),
+        director(std::move(director)),
+        left(nullptr),
+        right(nullptr) {}
 };
 
-#endif //NODE_H
+#endif // NODE_H
