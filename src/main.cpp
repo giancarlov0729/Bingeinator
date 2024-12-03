@@ -25,7 +25,7 @@ void printWorkingDirectory() {
 
 
 // Function to read the CSV file and populate the MaxHeap and SplayTree
-void readCSV(const string& filePath, MaxHeap& maxHeap, SplayTree& splayTree, bool choice, int numPool) {
+void readCSV(const string& filePath, MaxHeap& maxHeap, SplayTree& splayTree, bool choice) {
     ifstream file(filePath);
     string line;
 
@@ -37,7 +37,7 @@ void readCSV(const string& filePath, MaxHeap& maxHeap, SplayTree& splayTree, boo
     // Skip the header
     getline(file, line);
 
-    while (getline(file, line) && numPool > 0) {
+    while (getline(file, line)) {
         stringstream ss(line);
         string title, genre, director, company, ratingStr;
         double rating;
@@ -87,7 +87,6 @@ void readCSV(const string& filePath, MaxHeap& maxHeap, SplayTree& splayTree, boo
 
         maxHeap.insert(node);
         splayTree.insert(node);
-        numPool--;
 
     }
     file.close();
@@ -103,16 +102,18 @@ int main() {
 
     cout << "Welcome to The Bingeinator!" << std::endl;
 
-    cout << "Before we begin, what size pool of shows would you like to pull from?\n10000, 50,000, 100,000, or 150,000?\nEnter as an integer:\n";
-    string input;
+    cout << "Before we begin, do you want to use a Max Heap (m) or a SplayTree (s)? \n";
+    char input;
     cin >> input; // Get a single character input
 
-    if (input == "10000" || input == "50000" || input == "100000" || input == "150000") {
-        cout << "You chose .\n";
-        readCSV("src/tvs.csv", maxHeap, splayTree, true, stoi(input));
+    if (input == 'm' || input == 'M') {
+        cout << "You chose Max Heap.\n";
+        readCSV("src/tvs.csv", maxHeap, splayTree, true);
+    } else if (input == 's' || input == 'S') {
+        cout << "You chose Splay Tree.\n";
+        readCSV("src/tvs.csv", maxHeap, splayTree, false);
     } else {
         cout << "Invalid input.\n";
-        cout << "Make sure to enter one of the four numbers.\n";
     }
     return 0;
 }
