@@ -84,9 +84,11 @@ void readCSV(const string& filePath, MaxHeap& maxHeap, SplayTree& splayTree, boo
 
         // Since the dataset has 150,000 entries we'll let
         // the user decide the size of the pool 10000 to 150000
-
-        maxHeap.insert(node);
-        splayTree.insert(node);
+        if(choice){
+            maxHeap.insert(node);
+        }else{
+            splayTree.insert(node);
+        }
 
     }
     file.close();
@@ -115,5 +117,22 @@ int main() {
     } else {
         cout << "Invalid input.\n";
     }
+
+    cout << "Now that we everything is set up, let's help you find your next Binge!" << endl;
+    cout << "What show did you just recently finish?" << "\nType in the full name of the show here: " << endl;
+    string userShow;
+    cin >> userShow;
+
+    cout << "\"" << userShow << "\"" << " is a great show!\nDo you want recommendations based off the same genre or creator/director?" << endl;
+    cout << "Input g for genre or d for director: ";
+    string userInput;
+    cin >> userInput;
+
+    if(userInput == "g"){
+        userInput == "genre";
+    }
+
+    cout << "Here are shows with the highest ratings that have the same ";
+
     return 0;
 }
