@@ -118,8 +118,9 @@ void recommendFromMaxHeap(MaxHeap& maxHeap, const string& userGenre, const strin
     while (!maxHeap.isEmpty() && (genreList.size() < 20 || directorList.size() < 20)) {
         Node topShow = maxHeap.extractMax();
 
-        // Check for same genre
-        if (genreList.size() < 20 && toLowerCase(topShow.genre) == toLowerCase(userGenre)) {
+
+        // Check for same genre or contains the genre
+        if (genreList.size() < 20 && toLowerCase(topShow.genre).find(toLowerCase(userGenre)) != string::npos ) {
             genreList.push_back(topShow);
         }
 
@@ -143,7 +144,7 @@ void recommendFromMaxHeap(MaxHeap& maxHeap, const string& userGenre, const strin
         cout << show.title << " (" << show.rating << ")" << endl;
     }
 
-    cout << "\nTop 20 Shows with the Same Creator (" << userDirector << "):" << endl;
+    cout << "\nTop 20 Shows with the Same Director (" << userDirector << "):" << endl;
     for (const Node& show : directorList) {
         cout << show.title << " (" << show.rating << ")" << endl;
     }
