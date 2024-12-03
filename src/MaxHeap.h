@@ -7,15 +7,15 @@
 
 #include <vector>
 #include <stdexcept>
-#include "Node.h" // Assuming Node is defined here
+#include "Node.h"
 
 class MaxHeap {
 private:
     std::vector<Node> heap;
 
-    void heapifyUp(size_t index) {
+    void heapifyUp(int index) {
         while (index > 0) {
-            size_t parent = (index - 1) / 2;
+            int parent = (index - 1) / 2;
             if (heap[index].rating <= heap[parent].rating)
                 break;
             std::swap(heap[index], heap[parent]);
@@ -23,10 +23,10 @@ private:
         }
     }
 
-    void heapifyDown(size_t index) {
-        size_t left = 2 * index + 1;
-        size_t right = 2 * index + 2;
-        size_t largest = index;
+    void heapifyDown(int index) {
+        int left = 2 * index + 1;
+        int right = 2 * index + 2;
+        int largest = index;
 
         if (left < heap.size() && heap[left].rating > heap[largest].rating)
             largest = left;
