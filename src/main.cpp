@@ -234,10 +234,10 @@ int main() {
     bool whichAlgo = true;
     if (input == "m" || input == "M") {
         cout << "You chose Max Heap.\n";
-        readCSV("src/tvs.csv", data);
+        readCSV("tvs.csv", data);
     } else if (input == "q" || input == "Q") {
         cout << "You chose Quicksort.\n";
-        readCSV("src/tvs.csv", data);
+        readCSV("tvs.csv", data);
         whichAlgo = false;
     } else {
         cout << "Invalid input.\n";
