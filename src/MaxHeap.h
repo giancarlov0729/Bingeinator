@@ -66,7 +66,7 @@ public:
         return heap.empty();
     }
 
-    size_t size() const {
+    int size() const {
         return heap.size();
     }
 };

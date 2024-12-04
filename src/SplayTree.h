@@ -1,11 +1,9 @@
-//
-// Created by Giancarlo Vidal on 12/2/24.
-//
-
 #ifndef SPLAY_TREE_H
 #define SPLAY_TREE_H
 
 #include <iostream>
+#include <vector>
+#include <algorithm>
 #include "Node.h" // Assuming Node is defined here
 
 class SplayTree {
@@ -26,7 +24,7 @@ private:
         return rightChild;
     }
 
-    Node* splay(Node* node, const string& key) {
+    Node* splay(Node* node, const std::string& key) {
         if (!node || node->title == key)
             return node;
 
@@ -71,9 +69,22 @@ private:
         }
     }
 
+    // Inorder traversal to gather all nodes of a specific genre
+    void inorderTraversalByGenre(Node* node, const std::string& genre, std::vector<Node>& filteredShows) const {
+        if (!node) return;
+
+        if (node->genre == genre) {
+            filteredShows.push_back(*node); // Add to filtered list if genre matches
+        }
+
+        inorderTraversalByGenre(node->left, genre, filteredShows);
+        inorderTraversalByGenre(node->right, genre, filteredShows);
+    }
+
 public:
     SplayTree() : root(nullptr) {}
 
+    // Insert a node into the splay tree
     void insert(const Node& node) {
         if (!root) {
             root = new Node(node.title, node.rating, node.genre, node.director);
@@ -97,12 +108,14 @@ public:
         root = newNode;
     }
 
-    bool find(const string& key) {
+    // Find a node by title (splay the tree)
+    bool find(const std::string& key) {
         root = splay(root, key);
         return root && root->title == key;
     }
 
-    void remove(const string& key) {
+    // Remove a node by title (splay the tree)
+    void remove(const std::string& key) {
         if (!root)
             return;
 
@@ -123,6 +136,7 @@ public:
         delete temp;
     }
 
+    // Inorder traversal to display the tree
     void inorderTraversal(Node* node) const {
         if (!node)
             return;
@@ -131,15 +145,31 @@ public:
         inorderTraversal(node->right);
     }
 
+    // Display the entire tree (inorder)
     void display() const {
         inorderTraversal(root);
         std::cout << std::endl;
     }
 
+    // Get shows of a specific genre, sorted by rating in descending order
+    std::vector<Node> getShowsByGenre(const std::string& genre) {
+        std::vector<Node> filteredShows;
+        inorderTraversalByGenre(root, genre, filteredShows);
+
+        // Sort the filtered shows by rating (descending order)
+        std::sort(filteredShows.begin(), filteredShows.end(), [](const Node& a, const Node& b) {
+            return a.rating > b.rating;
+        });
+
+        return filteredShows;
+    }
+
+    // Get the root of the splay tree
     Node* getRoot() const {
         return root;
     }
 
+    // Destructor to clean up memory
     ~SplayTree() {
         while (root)
             remove(root->title);
