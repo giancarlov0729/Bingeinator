@@ -1,6 +1,8 @@
 #ifndef SPLAY_TREE_H
 #define SPLAY_TREE_H
 
+/*
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -175,5 +177,5 @@ public:
             remove(root->title);
     }
 };
-
+*/
 #endif // SPLAY_TREE_H
